@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Code Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            height: 100vh;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .header {
+            height: 50px;
+            background: #2d2d30;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid #3e3e42;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #007acc;
+            font-size: 18px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            background: #1177bb;
+        }
+
+        .btn.secondary {
+            background: #3c3c3c;
+        }
+
+        .btn.secondary:hover {
+            background: #4c4c4c;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #252526;
+            border-right: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .files-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .file-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            word-break: break-all;
+        }
+
+        .file-item:hover {
+            background: #2a2d2e;
+        }
+
+        .file-item.active {
+            background: #37373d;
+        }
+
+        .file-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #1e1e1e;
+        }
+
+        .tab-bar {
+            height: 40px;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 8px 15px;
+            background: #2d2d30;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 2px;
+        }
+
+        .tab.active {
+            background: #1e1e1e;
+        }
+
+        .tab-close {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3c3c3c;
+            border: none;
+            color: #cccccc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .tab-close:hover {
+            background: #e74c3c;
+        }
+
+        .editor {
+            flex: 1;
+            border: none;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 20px;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+        }
+
+        .status-bar {
+            height: 30px;
+            background: #007acc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            font-size: 12px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .welcome-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .welcome-screen h1 {
+            color: #007acc;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .welcome-screen p {
+            color: #cccccc;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .welcome-btn {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .welcome-btn:hover {
+            background: #1177bb;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .header {
+                padding: 0 10px;
+            }
+            
+            .logo {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            
+            .editor {
+                font-size: 16px;
+                padding: 15px;
+            }
+            
+            .tab-bar {
+                padding: 0 5px;
+            }
+            
+            .tab {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .header-controls {
+                gap: 5px;
+            }
+            
+            .btn {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+            
+            .welcome-screen h1 {
+                font-size: 24px;
+            }
+            
+            .welcome-screen p {
+                font-size: 14px;
+            }
+        }
+
+        /* Syntax highlighting for different file types */
+        .editor.python { color: #d4d4d4; }
+        .editor.markdown { color: #d4d4d4; }
+        .editor.shell { color: #569cd6; }
+        .editor.text { color: #d4d4d4; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📱 Mobile Code Editor</div>
+        <div class="header-controls">
+            <button class="btn secondary" onclick="toggleSidebar()">☰</button>
+            <button class="btn secondary" onclick="toggleTheme()">🌓</button>
+            <button class="btn" onclick="openFile()">📁 Open</button>
+            <button class="btn" onclick="saveFile()">💾 Save</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span>FILES</span>
+                <button class="btn secondary" onclick="createNewFile()">+ New</button>
+            </div>
+            <div class="files-list" id="filesList">
+                <!-- Files will be populated here -->
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <div class="tab-bar" id="tabBar">
+                <!-- Tabs will be populated here -->
+            </div>
+            
+            <div class="welcome-screen" id="welcomeScreen">
+                <h1>Welcome to Mobile Code Editor</h1>
+                <p>Start by opening a file or creating a new one</p>
+                <div class="welcome-actions">
+                    <button class="welcome-btn" onclick="openFile()">📁 Open File</button>
+                    <button class="welcome-btn" onclick="createNewFile()">📄 New File</button>
+                </div>
+            </div>
+
+            <textarea class="editor" id="editor" placeholder="Start typing your code here..." style="display: none;"></textarea>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span id="statusLeft">Ready</span>
+        <span id="statusRight">Mobile Code Editor v1.0</span>
+    </div>
+
+    <input type="file" id="fileInput" class="file-input" accept=".txt,.md,.py,.sh,.js,.html,.css,.json" multiple onchange="handleFileSelect(event)">
+
+    <script>
+        let files = {};
+        let activeFile = null;
+        let openTabs = [];
+        let isDarkTheme = true;
+        let fileCounter = 0;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            const body = document.body;
+            
+            if (isDarkTheme) {
+                body.style.background = '#1e1e1e';
+                body.style.color = '#d4d4d4';
+            } else {
+                body.style.background = '#ffffff';
+                body.style.color = '#333333';
+            }
+            
+            updateStatusBar();
+        }
+
+        function openFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const selectedFiles = Array.from(event.target.files);
+            
+            selectedFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileName = file.name;
+                    const content = e.target.result;
+                    
+                    files[fileName] = {
+                        name: fileName,
+                        content: content,
+                        modified: false,
+                        type: getFileType(fileName)
+                    };
+                    
+                    addFileToSidebar(fileName);
+                    openTab(fileName);
+                    
+                    if (!activeFile) {
+                        switchToFile(fileName);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        function createNewFile() {
+            const fileName = prompt('Enter file name (e.g., script.py, readme.md):');
+            if (!fileName) return;
+            
+            if (files[fileName]) {
+                alert('File already exists!');
+                return;
+            }
+            
+            files[fileName] = {
+                name: fileName,
+                content: '',
+                modified: false,
+                type: getFileType(fileName)
+            };
+            
+            addFileToSidebar(fileName);
+            openTab(fileName);
+            switchToFile(fileName);
+            updateStatusBar();
+        }
+
+        function addFileToSidebar(fileName) {
+            const filesList = document.getElementById('filesList');
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.onclick = () => switchToFile(fileName);
+            
+            const icon = getFileIcon(getFileType(fileName));
+            fileItem.innerHTML = `
+                <span class="file-icon">${icon}</span>
+                <span>${fileName}</span>
+            `;
+            
+            filesList.appendChild(fileItem);
+            hideWelcomeScreen();
+        }
+
+        function openTab(fileName) {
+            if (openTabs.includes(fileName)) return;
+            
+            openTabs.push(fileName);
+            renderTabs();
+        }
+
+        function renderTabs() {
+            const tabBar = document.getElementById('tabBar');
+            tabBar.innerHTML = '';
+            
+            openTabs.forEach(fileName => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${activeFile === fileName ? 'active' : ''}`;
+                tab.onclick = () => switchToFile(fileName);
+                
+                const modifiedIndicator = files[fileName]?.modified ? ' •' : '';
+                tab.innerHTML = `
+                    <span>${fileName}${modifiedIndicator}</span>
+                    <button class="tab-close" onclick="event.stopPropagation(); closeTab('${fileName}')">×</button>
+                `;
+                
+                tabBar.appendChild(tab);
+            });
+        }
+
+        function closeTab(fileName) {
+            const index = openTabs.indexOf(fileName);
+            if (index > -1) {
+                openTabs.splice(index, 1);
+            }
+            
+            if (activeFile === fileName) {
+                if (openTabs.length > 0) {
+                    switchToFile(openTabs[0]);
+                } else {
+                    activeFile = null;
+                    document.getElementById('editor').style.display = 'none';
+                    showWelcomeScreen();
+                }
+            }
+            
+            renderTabs();
+        }
+
+        function switchToFile(fileName) {
+            if (activeFile) {
+                // Save current editor content
+                files[activeFile].content = document.getElementById('editor').value;
+            }
+            
+            activeFile = fileName;
+            const editor = document.getElementById('editor');
+            editor.value = files[fileName].content;
+            editor.style.display = 'block';
+            editor.className = `editor ${files[fileName].type}`;
+            
+            // Update active states
+            document.querySelectorAll('.file-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.trim() === fileName) {
+                    item.classList.add('active');
+                }
+            });
+            
+            renderTabs();
+            hideWelcomeScreen();
+            updateStatusBar();
+            
+            // Focus editor on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => editor.focus(), 100);
+            }
+        }
+
+        function saveFile() {
+            if (!activeFile) return;
+            
+            const content = document.getElementById('editor').value;
+            files[activeFile].content = content;
+            files[activeFile].modified = false;
+            
+            // Create download
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = activeFile;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            renderTabs();
+            updateStatusBar('File saved successfully!');
+        }
+
+        function getFileType(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            switch (ext) {
+                case 'py': return 'python';
+                case 'md': return 'markdown';
+                case 'sh': return 'shell';
+                case 'js': return 'javascript';
+                case 'html': return 'html';
+                case 'css': return 'css';
+                case 'json': return 'json';
+                default: return 'text';
+            }
+        }
+
+        function getFileIcon(fileType) {
+            switch (fileType) {
+                case 'python': return '🐍';
+                case 'markdown': return '📝';
+                case 'shell': return '💻';
+                case 'javascript': return '⚡';
+                case 'html': return '🌐';
+                case 'css': return '🎨';
+                case 'json': return '📋';
+                default: return '📄';
+            }
+        }
+
+        function hideWelcomeScreen() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+        }
+
+        function showWelcomeScreen() {
+            document.getElementById('welcomeScreen').style.display = 'flex';
+        }
+
+        function updateStatusBar(message = null) {
+            const statusLeft = document.getElementById('statusLeft');
+            const statusRight = document.getElementById('statusRight');
+            
+            if (message) {
+                statusLeft.textContent = message;
+                setTimeout(() => {
+                    statusLeft.textContent = activeFile ? `Editing: ${activeFile}` : 'Ready';
+                }, 2000);
+            } else {
+                statusLeft.textContent = activeFile ? `Editing: ${activeFile}` : 'Ready';
+            }
+            
+            const theme = isDarkTheme ? 'Dark' : 'Light';
+            statusRight.textContent = `${theme} • Mobile Code Editor v1.0`;
+        }
+
+        // Track file modifications
+        document.getElementById('editor').addEventListener('input', function() {
+            if (activeFile) {
+                files[activeFile].modified = true;
+                renderTabs();
+            }
+        });
+
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                if (activeFile && window.innerWidth <= 768) {
+                    document.getElementById('editor').focus();
+                }
+            }, 500);
+        });
+
+        // Initialize
+        updateStatusBar();
+    </script>
+</body>
+</html>
