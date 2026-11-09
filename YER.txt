@@ -1,1 +1,85 @@
 
+Siva, I understand exactly what we need to achieve here.
+
+Your appraisal should communicate three things:
+
+* Consistency: Despite personal difficulties, increased workload and limited resources, your performance remained consistent.
+
+* Ownership: You didn't just complete Linux patching. You took responsibility for the entire process, from preparation to bringing servers back online and confirming they were ready for users.
+
+* Contribution beyond your role: You supported a new team member, shared technical knowledge, communicated with other teams and users, and adapted to increased patching cycles.
+
+One important thing: we will not fabricate SLA percentages, certifications or training achievements. We can present your actual contributions confidently without making unsupported claims.
+
+I'll keep the English professional but natural, without corporate buzzwords or exaggerated language.
+
+### 1\. Overall Comments on Priorities
+
+Covers all five priorities: SLA, BTO/timesheets, certification, service quality and skill development.
+
+Throughout the year, I have consistently focused on completing assigned deliverables within agreed timelines while maintaining service quality. I have made every effort to meet the expected SLA and quality targets and keep reopens to a minimum. I do not have the exact performance figures available at the moment, so I would prefer to validate the numbers rather than quote an incorrect percentage.
+
+I have maintained my timesheet submissions and closures, provided timely shift handovers and actively participated in team connects and discussions. There was one period when my father's health situation required additional personal attention, but I continued to manage my work responsibilities and maintain my commitments.
+
+Regarding certifications, I have not completed a cloud or technical certification during this review period. However, I have continued developing my practical technical knowledge through day-to-day server administration, Linux troubleshooting, patching activities and automation.
+
+Overall, I have focused on delivering reliable service, maintaining accuracy and taking responsibility for assigned activities from start to finish.
+
+### 2\. Overall Comments on Skills Maturity
+
+Focus: Technical growth, Linux administration, troubleshooting and practical automation.
+
+During this year, I have gained valuable hands-on experience in Linux administration, particularly in server patching, troubleshooting and post-patching validation. I have taken an active role in patching activities and strengthened my understanding of the complete process, including preparation, execution, service validation and ensuring servers are successfully brought back online.
+
+I have also started using simple Bash scripting and loops to check multiple server parameters and reduce repetitive manual checks. I make additional verification checks wherever required, especially when dealing with server boot issues, service availability and patching validation.
+
+I understand the importance of continuously improving my technical skills, and I plan to further strengthen my knowledge in Linux automation, scripting and relevant cloud technologies. I will also focus on completing relevant technical certifications in the coming review period.
+
+### 3\. Overall Comments on Leadership Skills Maturity
+
+Focus: Ownership, knowledge sharing, mentoring, communication and teamwork.
+
+This year, I have taken additional responsibility in supporting the team, especially during patching activities when resources were limited and the workload increased.
+
+I have also taken the initiative to guide a new team member through the patching process, explaining the activities step by step and helping him gain the confidence to perform tasks independently. I have shared practical knowledge and provided guidance whenever required.
+
+Apart from execution, I have actively communicated server updates, patching progress, issues and important observations with internal teams. I have also coordinated with end users and explained the activities being performed to ensure proper communication and smooth service delivery.
+
+I believe leadership is also about taking ownership, supporting colleagues and ensuring that work continues smoothly even during challenging situations. I have tried to demonstrate these qualities through my contributions throughout the year.
+
+### 4\. Overall Comments on Year Contribution
+
+Your strongest section. Focus: Increased workload, ownership, reliability and personal commitment.
+
+One of my major contributions this year has been taking ownership of Linux server patching activities. Earlier, we followed one patching cycle per month, but the frequency increased to two cycles per month, which significantly increased the workload. Despite limited resources and additional responsibilities, I continued to support the activities and ensured that the work was completed without compromising service quality.
+
+I have taken responsibility for the complete patching process, starting from preparation and execution to post-patching checks, service validation and ensuring that servers are back online and available to users. I have also spent additional hours whenever required to ensure smooth completion and avoid unnecessary delays.
+
+Along with my regular responsibilities, I have supported team members through knowledge sharing, coordinated with internal teams and maintained communication with end users regarding server activities and updates.
+
+There were also personal challenges during the year, particularly concerning my father's health. Despite these circumstances, I remained committed to my responsibilities and continued contributing consistently.
+
+Overall, I believe I have demonstrated ownership, reliability and a strong commitment to the team. I have always tried to give my best, take responsibility beyond just completing assigned tasks and ensure that the services under my responsibility are delivered properly.
+
+### My recommendation before submitting
+
+A few strategic points:
+
+| Priority                      | Weightage | How we position it                                   |
+| ----------------------------- | --------- | ---------------------------------------------------- |
+| SLA & deliverables            | 30%       | Consistent delivery, without inventing metrics       |
+| BTO & timesheets              | 20%       | Compliance, handovers and weekly connects            |
+| Cloud/technical certification | 10%       | Honest gap, practical learning and future commitment |
+| Service quality               | 20%       | Strong ownership of end-to-end patching              |
+| Skills development            | 20%       | Linux, Bash scripting and troubleshooting            |
+
+Three things I particularly want you to retain:
+
+* Don't write that your SLA was 95% unless you verify it. Your manager can check the actual dashboard.
+
+* Don't overemphasise your father's health. Mention it once as context, not as an excuse.
+
+* Your strongest achievement is the transition from one to two patching cycles per month while maintaining delivery with limited resources. Make sure your manager recognises this.
+
+One additional suggestion: If you can get the actual SLA and quality dashboard figures before submitting, we can strengthen the first comment considerably. Otherwise, the wording above is safe and professional.
+
